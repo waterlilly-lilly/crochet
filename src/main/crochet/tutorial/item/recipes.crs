@@ -3,15 +3,17 @@ import crochet.api.Recipe
 namespace tutorial
 
 <custom_item> = Recipe {
-    pattern = """
-    WWW
-    WR 
-    WWW
-    """
-    key = {
-        "W": <#minecraft:logs>
-        "R": <minecraft:redstone>
+    table = <minecraft:crafting_table_shaped>
+
+    %pattern {
+        W = <#minecraft:logs>
+        R = <minecraft_redstone>
+
+        W W W
+        R R
+        W W W
     }
+    
     result = {
         item = <custom_item>
         count = 4

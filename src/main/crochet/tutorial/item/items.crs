@@ -6,16 +6,21 @@ namespace tutorial
     settings {
         max_count = 16
     }
+
     %item_model generated // uses minecraft:item/generated as the model parent, and uses the texture with the same name as this texture
     %fuel 300
+
     tooltip = %text <red>t"item.tutorial.custom_item.tooltip"</red>
+
     on use (_world, player, hand) {
         player.playSound(SoundEvents.BLOCK_WOOL_BREAK, 1.0, 1.0)
         Success(player.getStackInHand hand)
     }
 }
+
 <test_group> = ItemGroup {
     icon = <custom_item>
+    
     register {
         <minecraft:bone_block>
         <minecraft:apple>

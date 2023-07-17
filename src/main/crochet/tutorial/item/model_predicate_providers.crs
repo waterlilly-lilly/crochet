@@ -7,6 +7,7 @@ import crochet.api.ItemModel
             if entity == null {
                 return 0.0
             }
+
             if entity.active_item != stack {
                 return 0.0
             } else {
@@ -14,11 +15,13 @@ import crochet.api.ItemModel
             }
         }
     }
+
     predicate <minecraft:pulling> {
         get predicate (stack, world, entity) {
             if entity == null {
                 return 0.0
             }
+
             if entity.is_using_item && entity.active_item == stack {
                 return 1.0
             } else {
@@ -26,6 +29,7 @@ import crochet.api.ItemModel
             }
         }
     }
+    
     // TODO i really hate this
     %predicates {
         pulling >= 1.0 => <tutorial:item/example_bow_pulling_0>

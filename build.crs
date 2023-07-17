@@ -9,14 +9,17 @@ build = {
         name = "Example Mod"
         description = "Example mod using Crochet and based on the Fabric tutorials"
     }
+
     dependencies = {
         java = 17
         crochet = 0.1.0
         mixin = 0.8.5
         minecraft = 1.20.1
     }
+
     entrypoints = {
         main = this.init
     }
+    
     %fabric_jar
 }

@@ -12,6 +12,7 @@ import net.minecraft.entity.LivingEntity
         if target is LivingEntity {
             target.addStatusEffect Slowness 20 * 2 * level level - 1
         }
-        continue // works the same as a call to super
+
+        super
     }
 }
