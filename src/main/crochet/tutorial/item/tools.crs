@@ -1,0 +1,44 @@
+import crochet.api.ToolMaterial
+import net.minecraft.recipe.Ingredient
+import Pickaxe, Shovel, Hoe, Axe, Sword from crochet.api.Tools
+
+namespace tutorial
+
+private potato_tool_material = ToolMaterial {
+    durability = 500
+    mining_speed_multiplier = 5.0
+    attack_damage = 3.0
+    mining_level = 2
+    enchantability = 15
+    repair_ingredient = <minecraft:potato> as Ingredient
+}
+<potato_shovel> = Shovel {
+    material = potato_tool_material
+    attack_damage = 1.5
+    attack_speed = -3.0
+    %item_model handheld
+}
+<potato_sword> = Sword {
+    material = potato_tool_material
+    attack_damage = 3
+    attack_speed = -2.4
+    %item_model handheld
+}
+<potato_pickaxe> = Pickaxe {
+    material = potato_tool_material
+    attack_damage = 1
+    attack_speed = -2.8
+    %item_model handheld
+}
+<potato_axe> = Axe {
+    material = potato_tool_material
+    attack_damage = 7.0
+    attack_speed = -3.2
+    %item_model handheld
+}
+<potato_hoe> = Hoe {
+    material = potato_tool_material
+    attack_damage = 7
+    attack_speed = -3.2
+    %item_model handheld
+}

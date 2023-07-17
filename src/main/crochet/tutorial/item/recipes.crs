@@ -1,0 +1,19 @@
+import crochet.api.Recipe
+
+namespace tutorial
+
+<custom_item> = Recipe {
+    pattern = """
+    WWW
+    WR 
+    WWW
+    """
+    key = {
+        "W": <#minecraft:logs>
+        "R": <minecraft:redstone>
+    }
+    result = {
+        item = <custom_item>
+        count = 4
+    }
+}

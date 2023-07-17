@@ -1,0 +1,5 @@
+import all from this // imports everything from within this src folder and all subdirectories
+
+init = function {
+    %register_all
+}

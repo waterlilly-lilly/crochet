@@ -1,0 +1,35 @@
+import crochet.api.Item
+import crochet.api.ItemModel
+
+<tutorial:custom_bow> = Item {
+    predicate <minecraft:pull> {
+        get predicate (stack, world, entity) {
+            if entity == null {
+                return 0.0
+            }
+            if entity.active_item != stack {
+                return 0.0
+            } else {
+                return (stack.max_use_time - entity.item_use_time_left) / 20.0
+            }
+        }
+    }
+    predicate <minecraft:pulling> {
+        get predicate (stack, world, entity) {
+            if entity == null {
+                return 0.0
+            }
+            if entity.is_using_item && entity.active_item == stack {
+                return 1.0
+            } else {
+                return 0.0
+            }
+        }
+    }
+    // TODO i really hate this
+    %predicates {
+        pulling >= 1.0 => <tutorial:item/example_bow_pulling_0>
+        pulling >= 1.0 && pull >= 0.65 => <tutorial:item/example_bow_pulling_1>
+        pulling >= 1.0 && pull >= 0.9 => <tutorial:item/example_bow_pulling_2>
+    }
+}

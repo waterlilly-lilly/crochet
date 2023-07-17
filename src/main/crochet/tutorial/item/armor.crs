@@ -1,0 +1,52 @@
+import crochet.api.ArmorMaterial
+import crochet.api.Item
+import crochet.api.ToolMaterial
+import Shield from crochet.api.Tools
+import net.minecraft.recipe.Ingredient
+
+<tutorial:custom_armor_material> = Item {
+    %item_model generated
+}
+custom_armor_material = ArmorMaterial {
+    boots = {
+        durability = 13
+        protection = 3
+    }
+    leggings = {
+        durability = 15
+        protection = 8
+    }
+    chestplate = {
+        durability = 16
+        protection = 8
+    }
+    helmet = {
+        durability = 11
+        protection = 3
+    }
+    // TODO idk if i like this syntax for non-literal getters
+    get durability (slot) = this[slot].durability * 10
+    get protection (slot) = this[slot].protection
+
+    enchantability = 1
+    equip_sound = SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE
+    repair_ingredient = <tutorial:custom_armor_material> as Ingredient
+    name = "custom_armor"
+    toughness = 10.0
+    knockback_resistance = 0.0
+}
+<tutorial:netherite_shield> = Shield {
+    durability = 2500
+    cooldown = 10
+    enchantability = 13
+    repair_item = <minecraft:netherite_ingot>
+    %has_banner // this does all the necessary stuff to allow this shield to be able to have a banner 
+}
+%register_armor_items custom_armor_material // creates items based on the name of the custom material and also creates all the items. this also generates the model files
+<itemgroup:minecraft:armor>.register {
+    <tutorial:custom_armor_material_helmet>
+    <tutorial:custom_armor_material_chestplate>
+    <tutorial:custom_armor_material_leggings>
+    <tutorial:custom_armor_material_boots>
+    <tutorial:netherite_shield>
+}

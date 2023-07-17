@@ -1,0 +1,17 @@
+import crochet.api.Enchantment
+import net.minecraft.entity.LivingEntity
+
+<tutorial:frost> = Enchantment {
+    rarity = Uncommon
+    target = Weapon
+    slot = {MainHand}
+    get min_power (_level) = 1
+    max_level = 3
+
+    on target_damaged (user, target, level) {
+        if target is LivingEntity {
+            target.addStatusEffect Slowness 20 * 2 * level level - 1
+        }
+        continue // works the same as a call to super
+    }
+}
