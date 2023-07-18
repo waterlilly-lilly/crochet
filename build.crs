@@ -20,6 +20,6 @@ build = {
     entrypoints = {
         main = this.init
     }
-    
+
     %fabric_jar
 }

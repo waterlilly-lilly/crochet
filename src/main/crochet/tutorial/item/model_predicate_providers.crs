@@ -29,7 +29,7 @@ import crochet.api.ItemModel
             }
         }
     }
-    
+
     // TODO i really hate this
     %predicates {
         pulling >= 1.0 => <tutorial:item/example_bow_pulling_0>

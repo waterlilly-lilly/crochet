@@ -13,7 +13,7 @@ namespace tutorial
         R R
         W W W
     }
-    
+
     result = {
         item = <custom_item>
         count = 4

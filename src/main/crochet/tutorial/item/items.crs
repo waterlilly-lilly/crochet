@@ -20,7 +20,7 @@ namespace tutorial
 
 <test_group> = ItemGroup {
     icon = <custom_item>
-    
+
     register {
         <minecraft:bone_block>
         <minecraft:apple>
