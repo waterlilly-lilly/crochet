@@ -1,0 +1,34 @@
+import crochet.api.BlockEntity
+import crochet.api.Block
+
+namespace tutorial
+
+// TODO i haven't the slightest clue how this will be implemented. oh well!
+<demo_block> = Block {
+    entity = <demo_block_entity>
+    on use (state, world, pos, player, hand, hit) {
+        if not world.is_client {
+            entity = %this_entity
+            entity.number++
+            player.send_message l"Number is " + entity.number
+            Success
+        }
+        Pass
+    }
+    override append_tooltip (stack, world, tooltip, context) {
+        nbt = BlockItem.get_block_entity_nbt(stack)
+        if nbt == null {
+            nbt = NbtCompound() with { number = 0}
+        }
+        BlockItem.set_block_entity_nbt(stack, <demo_block_entity>, nbt)
+    }
+    tooltip.add(l"Number: " + nbt.number)
+}
+<demo_block_entity> = class of BlockEntity {
+    field number = 0
+    
+    override on tick (world, pos, state, entity) {
+
+    }
+}
+%block_item <demo_block> <demo_block_entity>

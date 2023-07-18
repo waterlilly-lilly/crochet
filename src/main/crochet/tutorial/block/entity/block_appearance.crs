@@ -1,0 +1,14 @@
+import crochet.api.Block
+
+namespace tutorial
+
+<transparent_block> = Block {
+    non_opaque = true
+
+    model = %cube_all
+    %render_layer cutout
+}
+<invisible_block> = Block {
+    get render_type = Invisible
+    get outline_shape = empty 
+}

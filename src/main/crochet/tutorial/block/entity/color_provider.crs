@@ -1,0 +1,11 @@
+import crochet.api.Block
+
+%namespace tutorial
+
+<colored_block> = Block {
+    get color = 0x3495EB
+    //TODO with might not be right. it's more of a mutable foreach
+    %cube_all <minecraft:block/white_concrete> with_faces (_uv, _texture, tintindex, _) {
+        tintindex = 0
+    }
+}

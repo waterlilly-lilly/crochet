@@ -1,5 +1,12 @@
+import crochet.api.Init
 import all from this // imports everything from within this src folder and all subdirectories
 
-init = function {
-    %register_all
+init = Init {
+    common(mod) {
+        super
+        %register all
+    }
+    client(mod) {
+        super
+    }
 }

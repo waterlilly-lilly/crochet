@@ -1,0 +1,36 @@
+import crochet.api.Inventory
+import crochet.api.Block
+
+namespace tutorial
+
+// TODO probably needs WAY more depth on how this works
+<inventory_block> = Block {
+    entity = <inventory_block_entity>
+
+    on use (state, world, pos, player, hand, hit_result) {
+        inventory = world.get_block_entity(pos) as Inventory
+        if not player.stack_in_hand(hand).empty {
+            if inventory[0].empty {
+                inventory[0] = player.stack_in_hand(hand).copy
+                player.stack_in_hand(hand).set_count(0)
+            } else if inventory[1].empty {
+                inventory[1] = player.stack_in_hand(hand).copy
+                player.stack_in_hand(hand).set_count(0)
+            } else {
+                println("The first slot holds" + inventory[0] + " and the second slot holds " + inventory[1])
+            }
+        } else {
+            if not inventory[1].empty {
+                player.inventory.offer_or_drop(inventory[1])
+                inventory.remove(1)
+            } else if not inventory[0].empty {
+                player.inventory.offer_or_drop(inventory[0])
+                inventory.remove(0)
+            }
+        }
+        Success
+    }
+}
+<inventory_block_entity> = Inventory {
+    slots = 2
+}
