@@ -1,0 +1,32 @@
+import crochet.api.Block
+
+%namespace tutorial
+
+<polished_andesite_vertical_slab> = Block {
+    state {
+        facing = Properties.HORIZONTAL_FACING
+    }
+    get outline_shape (state, _) {
+        match state.facing {
+            North => cuboid(0, 0, 0, 1, 1, 0.5)
+            South => cuboid(0, 0, 0.5, 1, 1, 1)
+            East => cuboid(0.5, 0, 0, 1, 1, 1)
+            West => cuboid(0, 0, 0, 0.5, 1, 1)
+            _ => full_cube
+        }
+    }
+    model = Model {
+        parent = <block/vertical_slab>
+        textures = {
+            bottom = <minecraft:block/polished_andesite>
+            top = <minecraft:block/polished_andesite>
+            side = <minecraft:block/polished_andesite>
+        }
+    }
+
+    %waterloggable
+    
+    get placement_state (ctx) {
+        super with {facing = ctx.horizontal_player_facing.opposite}
+    }
+}

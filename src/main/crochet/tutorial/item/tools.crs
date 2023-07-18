@@ -2,7 +2,7 @@ import crochet.api.ToolMaterial
 import net.minecraft.recipe.Ingredient
 import Pickaxe, Shovel, Hoe, Axe, Sword from crochet.api.Tools
 
-namespace tutorial
+%namespace tutorial
 
 private potato_tool_material = ToolMaterial {
     durability = 500

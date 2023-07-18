@@ -1,6 +1,6 @@
 import crochet.api.Recipe
 
-namespace tutorial
+%namespace tutorial
 
 <custom_item> = Recipe {
     table = <minecraft:crafting_table_shaped>

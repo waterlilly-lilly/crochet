@@ -1,7 +1,7 @@
 import crochet.api.Item
 import crochet.api.ItemGroup
 
-namespace tutorial
+%namespace tutorial
 <custom_item> = Item {
     settings {
         max_count = 16

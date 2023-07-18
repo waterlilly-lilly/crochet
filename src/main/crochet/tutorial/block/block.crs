@@ -1,0 +1,25 @@
+import crochet.api.Block
+
+%namespace tutorial
+
+<example_block> = Block {
+    strength = 4.0
+    requires_tool = true
+
+    %cube_all <block/example_block>
+
+    %drop_block_item
+
+    tags {
+        <#minecraft:mineable/pickaxe>
+        <#minecraft:needs_iron_tool>
+    }
+
+    on use (world, player, _) {
+        if not world.is_client {
+            player.send_message l"Hello world!"
+        } 
+        Success
+    }
+}
+%block_item <example_block>
