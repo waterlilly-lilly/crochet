@@ -1,3 +1,3 @@
-/compiler/.idea/
-/compiler/target
-/compiler/Cargo.lock
+.idea/
+target/
+Cargo.lock
