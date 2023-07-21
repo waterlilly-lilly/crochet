@@ -5,13 +5,18 @@ name = "Example Mod"
 description = "Example mod using Crochet and based on the Fabric tutorials"
 entrypoint = "tutorial.init.init"
 
-[dependencies]
+[versions]
 java = "17"
 crochet = "0.1.0"
-mixin = "0.8.5"
-minecraft = "1.20.1"
+minecraft = "1.20.1" # TODO loom? loom replacement? this single line is a future nightmare
+
+[quilt]
+mappings = "1"
+loader = "0.19.1"
+api = "7.0.3+0.83.1"
 
 [target]
 datagen = "full"
 codegen = "full"
-jar = "fabric"
+mappings = "net.fabricmc:intermediary"
+jar = "quilt"
