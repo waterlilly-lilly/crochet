@@ -3,8 +3,9 @@
 extern crate core;
 
 mod buildfile;
-mod minecraft;
+mod minecraft_jar;
 mod util;
+mod mappings;
 
 use std::{env, fs};
 use std::error::Error;
@@ -18,7 +19,7 @@ use log::{trace, debug, info, warn, error};
 use reqwest::Client;
 use tokio::runtime::Runtime;
 use crate::buildfile::{BuildFile, load_build_file};
-use crate::minecraft::get_merged_minecraft_jar;
+use crate::minecraft_jar::{download_jar};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -63,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>>{
             trace!("stage 1: build file resolution");
             let build_file = load_build_file(&args)?;
             trace!("stage 2: downloading minecraft.jar and dependencies");
-            let minecraft_jar = get_merged_minecraft_jar(&args, &client, &runtime, &build_file)?;
+            let (version_json, minecraft_jar) = download_jar(&args, &client, &runtime, &build_file)?;
 
         }
         Commands::Init => {

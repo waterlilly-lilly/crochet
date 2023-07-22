@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::path::PathBuf;
-use log::{info, trace};
+use std::fs;
+use std::fs::File;
+use std::io::Write;
+use std::path::{Path, PathBuf};
+use log::{debug, info, trace};
 use reqwest::Client;
 use semver::Version;
 use crate::Args;
@@ -9,7 +12,7 @@ use crate::buildfile::BuildFile;
 use serde::Deserialize;
 use serde_json::Value;
 use tokio::runtime::Runtime;
-use crate::util::{download, download_file, download_json};
+use crate::util::{download, download_file, download_json, file_matches_hash, read_json};
 
 #[derive(Deserialize)]
 pub struct MinecraftVersionManifestV2 {
@@ -29,10 +32,6 @@ pub struct MinecraftVersionManifestV2Entry {
     #[serde(alias = "complianceLevel")]
     pub compliance_level: usize
 
-}
-pub struct MinecraftJar {
-    pub json: MinecraftVersionJson,
-    pub jar: PathBuf
 }
 #[derive(Deserialize, Debug)]
 pub struct MinecraftVersionJson {
@@ -67,26 +66,6 @@ pub struct AssetIndex {
     pub total_size: usize,
     pub url: String
 }
-/// Downloads the minecraft server and client jars, then merges them. Returns a merged jar.
-pub fn get_merged_minecraft_jar(args: &Args, client: &Client, runtime: &Runtime, build_file: &BuildFile) -> Result<MinecraftJar, Box<dyn Error>>{
-    let version = build_file.versions.minecraft.to_owned();
-    let manifest = get_manifest(version.to_owned(), client, runtime)?;
-    if args.debug {
-        dbg!(&manifest);
-    }
-    info!("Downloading minecraft jars for version {}", &manifest.id);
-    let version_json: MinecraftVersionJson = download_json(client, runtime, manifest.url.as_str())?;
-    if args.debug {
-        dbg!(&version_json.downloads);
-    }
-    let server_jar = runtime.block_on(download_file(client, &version_json.downloads["server"].url.as_str(), PathBuf::from("out/.cache")))?;
-    let client_jar = runtime.block_on(download_file(client, &version_json.downloads["client"].url.as_str(), PathBuf::from("out/.cache")))?;
-
-    Ok(MinecraftJar {
-        json: version_json,
-        jar: PathBuf::new()
-    })
-}
 fn get_manifest(version: String, client: &Client, runtime: &Runtime) -> Result<MinecraftVersionManifestV2Entry, Box<dyn Error>> {
     let manifest: MinecraftVersionManifestV2 = download_json(client, runtime, "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")?;
     for v in manifest.versions.into_iter() {
@@ -95,4 +74,32 @@ fn get_manifest(version: String, client: &Client, runtime: &Runtime) -> Result<M
         }
     }
     Err(Box::try_from("Requested version unable to be found!")?)
+}
+/// Downloads the minecraft client jar (which also contains the server jar).
+pub fn download_jar(args: &Args, client: &Client, runtime: &Runtime, build_file: &BuildFile) -> Result<(MinecraftVersionJson, PathBuf), Box<dyn Error>> {
+    let version = build_file.versions.minecraft.to_owned();
+
+    let minecraft_json = PathBuf::from(format!("out/.cache/mcjar/{version}.json"));
+    let minecraft_jar = PathBuf::from(format!("out/.cache/mcjar/minecraft-client-{version}.jar"));
+
+    let result = if !(Path::exists(&minecraft_json) && Path::exists(&minecraft_jar)) {
+        let manifest = get_manifest(version.to_owned(), client, runtime)?;
+
+        let version_data = runtime.block_on(download_file(client, manifest.url.as_str(), &minecraft_json))?;
+        let version_data = std::str::from_utf8(version_data.as_slice())?;
+        let version_json: MinecraftVersionJson = serde_json::from_str(version_data)?;
+
+        let client_jar_entry = &version_json.downloads["client"];
+
+        runtime.block_on(download_file(client, client_jar_entry.url.as_str(), &minecraft_jar))?;
+
+        (version_json, minecraft_jar)
+    } else {
+        debug!("Found version.json and minecraft-client.jar, skipping download...");
+        (
+            read_json::<MinecraftVersionJson, _>(&minecraft_json)?,
+            minecraft_jar
+        )
+    };
+    Ok(result)
 }
